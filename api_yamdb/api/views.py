@@ -28,11 +28,15 @@ class CreateUserView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         alphabet = string.ascii_letters + string.digits
-        confirmation_code = ''.join(secrets.choice(alphabet) for i in range(15))
+        confirmation_code = ''.join(
+            secrets.choice(alphabet) for i in range(15))
+        username = serializer.validated_data.get('username')
+        email = serializer.validated_data.get('email')
         send_mail(
-            'Код подтверждения',
-            f'Код подтверждения для POST-запроса: {confirmation_code}',
+            'Код подтверждения регистрации YAMDB',
+            f'Код подтверждения для пользователя <<{username}>>:'
+            f' {confirmation_code}',
             '',
-            #serializer. data.get('email'),
+            (email,),
         )
         return serializer.save(confirmation_code=confirmation_code)
