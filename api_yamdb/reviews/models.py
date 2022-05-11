@@ -20,6 +20,6 @@ class User(AbstractUser):
         max_length=2,
         choices=ROLE,
         default='UR',
-        unique=True,
         verbose_name='Роль пользователя',
     )
+    confirmation_code = models.CharField(max_length=15)
