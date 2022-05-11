@@ -1,11 +1,36 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-SCORE_CHOICE = [for i in range(1;10)]
+SCORE_CHOICE = [i for i in range(1, 11)]
+
 
 class Title(models.Model):
     pass
 
- 
+
+class User(AbstractUser):
+    USER = 'UR'
+    MODERATOR = 'MD'
+    ADMIN = 'AD'
+    ROLE = [
+        ('UR', 'user'),
+        ('MD', 'moderator'),
+        ('AD', 'admin'),
+    ]
+    bio = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name='Биография'
+    )
+    role = models.CharField(
+        max_length=2,
+        choices=ROLE,
+        default='UR',
+        unique=True,
+        verbose_name='Роль пользователя',
+    )
+
+
 class Review(models.Model):
     text = models.TextField()
     title = models.ForeignKey(
@@ -26,4 +51,3 @@ class Comment(models.Model):
         User, on_delete=models.CASCADE, related_name='comments'
     )
     pub_date = models.DateTimeField(auto_now_add=True)
-
