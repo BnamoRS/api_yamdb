@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'username', 'first_name', 'last_name', 'email', 'bio', 'role')
+            'id', 'username', 'first_name', 'last_name', 'email', 'bio', 'role')
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
@@ -20,3 +20,12 @@ class CreateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'email')
+
+
+class CreateTokenSerializer(serializers.ModelSerializer):
+    # Разобраться с проверкой уникальности поля автор
+    confirmation_code = serializers.CharField()
+    #username = serializers.
+    class Meta:
+        model = User
+        fields = ('confirmation_code',)

@@ -3,12 +3,16 @@ import secrets
 
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
-from requests import request
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, generics
 from rest_framework.pagination import PageNumberPagination
-from rest_framework import filters
+from rest_framework.response import Response
+from rest_framework import filters, status
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.decorators import api_view
 
-from api.serializers import UserSerializer, CreateUserSerializer
+from api.serializers import (
+    UserSerializer, CreateUserSerializer, CreateTokenSerializer)
 
 
 User = get_user_model()
@@ -40,3 +44,25 @@ class CreateUserView(generics.CreateAPIView):
             (email,),
         )
         return serializer.save(confirmation_code=confirmation_code)
+
+
+#class CreateTokenView(generics.CreateAPIView):
+#    queryset = User.objects.all()
+#    serialiser_class = CreateTokenSerializer
+
+@api_view(['POST'])
+def create_token(request):
+    #user = get_object_or_404(User, username=request.user)
+    #print(user.username)
+    serializer = CreateTokenSerializer(data=request.data)
+    if serializer.is_valid():
+        user = get_object_or_404(
+            User, username=request.data.get('username'))
+        if user.confirmation_code == serializer.validated_data.get('confirmation_code'):
+            token = RefreshToken.for_user(user)
+            print(str(token.access_token))
+            return Response(
+                {'token': str(token.access_token)},
+            )
+        return Response({'detail': 'Проверьте код подтверждения'})
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
