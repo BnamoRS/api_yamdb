@@ -26,6 +26,15 @@ class CreateTokenSerializer(serializers.ModelSerializer):
     # Разобраться с проверкой уникальности поля автор
     confirmation_code = serializers.CharField()
     #username = serializers.
+    
+    def validate_confirmation_code(self, value):
+        #print(value)
+        #print(self.instance.confirmation_code)
+
+        if self.instance.confirmation_code != value:
+            raise serializers.ValidationError('Неверный код подтверждения')
+        return value
+        
     class Meta:
         model = User
         fields = ('confirmation_code',)
