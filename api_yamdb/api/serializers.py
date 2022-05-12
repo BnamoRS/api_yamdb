@@ -1,4 +1,4 @@
-import email
+from attr import field
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
@@ -14,6 +14,13 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'id', 'username', 'first_name', 'last_name', 'email', 'bio', 'role')
+
+
+#class UserMeSerializer(serializers.ModelSerializer):
+#    
+#    class Meta:
+#        model = User
+#        fields = ('username', 'email')
 
 
 class CreateUserSerializer(serializers.ModelSerializer):

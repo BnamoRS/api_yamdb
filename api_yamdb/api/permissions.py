@@ -1,4 +1,3 @@
-from operator import or_
 from rest_framework.permissions import BasePermission
 
 

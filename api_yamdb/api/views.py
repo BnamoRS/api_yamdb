@@ -1,17 +1,21 @@
 import string
 import secrets
+from webbrowser import get
 
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
-from rest_framework import viewsets, generics
+from django.shortcuts import get_object_or_404
+from rest_framework import viewsets, generics, mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework import filters, status
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from api.permissions import IsAdminUserPermission
-from api.serializers import (
-    UserSerializer, CreateUserSerializer, CreateTokenSerializer)
+from api.serializers import (UserSerializer,
+                             UserMeSerializer,
+                             CreateUserSerializer,
+                             CreateTokenSerializer)
 
 
 User = get_user_model()
@@ -25,6 +29,16 @@ class UserViewSet(viewsets.ModelViewSet):
     pagination_class = PageNumberPagination
     filter_backends = (filters.SearchFilter,)
     search_fields = ('username',)
+
+
+#class UserMeView(mixins.RetrieveModelMixin,
+ #                mixins.UpdateModelMixin,
+ #                generics.GenericAPIView):
+ #   queryset = User.objects.all()
+ #   serializer_class = UserMeSerializer
+
+
+
 
 
 class CreateUserView(generics.CreateAPIView):
