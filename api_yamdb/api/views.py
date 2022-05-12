@@ -11,6 +11,7 @@ from rest_framework import filters, status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view
 
+from api.permissions import IsAdminUserPermission
 from api.serializers import (
     UserSerializer, CreateUserSerializer, CreateTokenSerializer)
 
@@ -21,6 +22,7 @@ User = get_user_model()
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (IsAdminUserPermission,)
     pagination_class = PageNumberPagination
     filter_backends = (filters.SearchFilter,)
     search_fields = ('username',)
