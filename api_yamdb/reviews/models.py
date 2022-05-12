@@ -23,3 +23,5 @@ class User(AbstractUser):
         verbose_name='Роль пользователя',
     )
     confirmation_code = models.CharField(max_length=15)
+
+    USERNAME_FIELDS = 'username'
