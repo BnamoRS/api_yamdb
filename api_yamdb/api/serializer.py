@@ -1,12 +1,45 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
 from rest_framework import serializers
+from reviews.models import Category, Genre, Titles
+from django.shortcuts import get_object_or_404
 from rest_framework.validators import UniqueValidator
 
 from reviews.models import Review, Comment
 
 
 User = get_user_model()
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = (
+            'username', 'first_name', 'last_name', 'email', 'bio', 'role')
+
+
+class CategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'slug')
+
+
+class GenreSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Genre
+        fields = ('id', 'name', 'slug')
+
+
+class TitlesSerializer(serializers.ModelSerializer):
+    genre = serializers.SlugRelatedField(
+        queryset=Genre.objects.all(),
+        slug_field='slug', many=True)
+
+    class Meta:
+        model = Titles
+        fields = ('id', 'name', 'year', 'category', 'genre')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -57,8 +90,6 @@ class CreateTokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('confirmation_code', 'username')
-            'username', 'first_name', 'last_name', 'email', 'bio', 'role'
-        )
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -69,7 +100,6 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ('id', 'text', 'author', 'score', 'pub_date')
-        
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -80,4 +110,3 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'text', 'author', 'pub_date')
-        

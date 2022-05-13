@@ -1,11 +1,20 @@
+from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
+from reviews.models import Category, Genre, Titles
+from rest_framework import viewsets, generics, permissions
+from rest_framework import filters, status
+from rest_framework.pagination import PageNumberPagination
+from .serializer import CategorySerializer, GenreSerializer, TitlesSerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
 import string
 import secrets
 from webbrowser import get
 
-from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
+
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, generics, permissions,filters, status
+from rest_framework import viewsets, generics, permissions, filters, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -34,6 +43,27 @@ class UserViewSet(viewsets.ModelViewSet):
     pagination_class = PageNumberPagination
     filter_backends = (filters.SearchFilter,)
     search_fields = ('username',)
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
+
+
+class GenreViewSet(viewsets.ModelViewSet):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
+
+
+class TitlesViewSet(viewsets.ModelViewSet):
+    queryset = Titles.objects.all()
+    serializer_class = TitlesSerializer
+    permission_class = (IsAdminUserPermission, )
+    pagination_class = PageNumberPagination
+
+    # def perform_create(self, serializer):
+    #     category = get_object_or_404(
 
 
 class UserMeView(generics.RetrieveUpdateAPIView):

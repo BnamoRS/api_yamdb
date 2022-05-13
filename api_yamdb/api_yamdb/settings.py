@@ -12,13 +12,14 @@ ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'reviews.User'
 
 INSTALLED_APPS = [
-    'reviews',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'reviews',
     'api',
 ]
 
@@ -101,7 +102,7 @@ SIMPLE_JWT = {
 
 LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
