@@ -42,6 +42,7 @@ class Genre(models.Model):
 
 
 class Titles(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.TextField(max_length=64)
     year = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField(default=None, null=True, blank=True)
