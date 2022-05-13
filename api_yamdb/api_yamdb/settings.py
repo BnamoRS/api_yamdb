@@ -12,7 +12,6 @@ ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'reviews.User'
 
 INSTALLED_APPS = [
-    'reviews',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

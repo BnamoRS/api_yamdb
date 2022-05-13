@@ -5,7 +5,6 @@ from rest_framework import viewsets, generics, permissions
 from rest_framework import filters, status
 from rest_framework.pagination import PageNumberPagination
 from .serializer import CategorySerializer, GenreSerializer, TitlesSerializer
-from .permissions import AdminOrReadOnly
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 import string
@@ -52,7 +51,7 @@ class GenreViewSet(viewsets.ModelViewSet):
 class TitlesViewSet(viewsets.ModelViewSet):
     queryset = Titles.objects.all()
     serializer_class = TitlesSerializer
-    permission_class = (AdminOrReadOnly, )
+    permission_class = (IsAdminUserPermission, )
     pagination_class = PageNumberPagination
 
     # def perform_create(self, serializer):

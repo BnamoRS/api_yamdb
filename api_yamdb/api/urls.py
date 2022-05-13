@@ -1,5 +1,6 @@
-<<<<<<< HEAD
-from api.views import CategoryViewSet, GenreViewSet, TitlesViewSet, UserViewSet
+from api.views import (CategoryViewSet, GenreViewSet,
+                       TitlesViewSet, UserViewSet,
+                       CreateUserView, CreateTokenView, UserMeView)
 from rest_framework.routers import DefaultRouter
 from django.urls import include, path
 
@@ -18,8 +19,10 @@ urlpatterns = [
     path('v1/users/', include(router_v1.urls)),
     path('v1/genres/', include(router_v1.urls)),
     path('v1/titles/', include(router_v1.urls)),
-    path('v1/auth/signup/', CreateUserView.as_view()), # дописать POST username, email
-    path('v1/auth/token/', CreateTokenView.as_view()), # POST username end confirmation_code
+    # дописать POST username, email
+    path('v1/auth/signup/', CreateUserView.as_view()),
+    # POST username end confirmation_code
+    path('v1/auth/token/', CreateTokenView.as_view()),
     path('v1/users/me/', UserMeView.as_view()),
     path('', include(router_v1.urls)),
 
