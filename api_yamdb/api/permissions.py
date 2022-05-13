@@ -1,8 +1,10 @@
-from rest_framework.permissions import SAFE_METHODS, BasePermission
-# from rest_framework import permissions
+from rest_framework.permissions import BasePermission
 
 
-class AdminOrReadOnly(BasePermission):  # переписать
+class IsAdminUserPermission(BasePermission):
+    message = {'detail': 'Недостаточно прав доступа'}
 
-    def has_object_permission(self, request, view, obj):
-        return request.method in SAFE_METHODS or obj.author == request.user
+    def has_permission(self, request, view):
+        if request.user.is_authenticated:
+            return request.user.role == 'admin' or request.user.is_staff or request.user.is_superuser
+        return False
