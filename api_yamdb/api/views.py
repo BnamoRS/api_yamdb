@@ -5,7 +5,7 @@ from webbrowser import get
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, generics, mixins
+from rest_framework import viewsets, generics, permissions
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework import filters, status
@@ -31,14 +31,16 @@ class UserViewSet(viewsets.ModelViewSet):
     search_fields = ('username',)
 
 
-#class UserMeView(mixins.RetrieveModelMixin,
- #                mixins.UpdateModelMixin,
- #                generics.GenericAPIView):
- #   queryset = User.objects.all()
- #   serializer_class = UserMeSerializer
+class UserMeView(generics.RetrieveUpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserMeSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
-
-
+    def get_object(self):
+        username = self.request.user.username
+        obj = get_object_or_404(self.queryset, username=username)
+        self.check_object_permissions(self.request, obj)
+        return obj
 
 
 class CreateUserView(generics.CreateAPIView):

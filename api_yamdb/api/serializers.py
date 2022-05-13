@@ -1,4 +1,3 @@
-from attr import field
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
@@ -13,14 +12,15 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'id', 'username', 'first_name', 'last_name', 'email', 'bio', 'role')
+            'username', 'first_name', 'last_name', 'email', 'bio', 'role')
 
 
-#class UserMeSerializer(serializers.ModelSerializer):
-#    
-#    class Meta:
-#        model = User
-#        fields = ('username', 'email')
+class UserMeSerializer(serializers.ModelSerializer):
+    role = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'bio', 'role')
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
