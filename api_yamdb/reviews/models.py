@@ -9,13 +9,11 @@ class Title(models.Model):
 
 
 class User(AbstractUser):
-    USER = 'UR'
-    MODERATOR = 'MD'
-    ADMIN = 'AD'
+
     ROLE = [
-        ('UR', 'user'),
-        ('MD', 'moderator'),
-        ('AD', 'admin'),
+        ('user', 'user'),
+        ('moderator', 'moderator'),
+        ('admin', 'admin'),
     ]
     bio = models.TextField(
         blank=True,
@@ -23,12 +21,14 @@ class User(AbstractUser):
         verbose_name='Биография'
     )
     role = models.CharField(
-        max_length=2,
+        max_length=50,
         choices=ROLE,
-        default='UR',
+        default='user',
         verbose_name='Роль пользователя',
     )
+    confirmation_code = models.CharField(max_length=15)
 
+    USERNAME_FIELDS = 'username'
 
     class Meta: 
         verbose_name = 'Пользователь' 
