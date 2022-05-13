@@ -8,17 +8,16 @@ from django.urls import include, path
 app_name = 'api'
 
 router_v1 = DefaultRouter()
-router_v1.register('v1/users', UserViewSet, basename='users')
 router_v1.register('users', UserViewSet, basename='users')
-router_v1.register('categories', CategoryViewSet)
-router_v1.register('genres', GenreViewSet)
-router_v1.register('titles', TitlesViewSet)
+router_v1.register('v1/categories', CategoryViewSet)
+router_v1.register('v1/genres', GenreViewSet)
+router_v1.register('v1/titles', TitlesViewSet)
 
 urlpatterns = [
-    path('v1/categories/', include(router_v1.urls)),
-    path('v1/users/', include(router_v1.urls)),
-    path('v1/genres/', include(router_v1.urls)),
-    path('v1/titles/', include(router_v1.urls)),
+    path('categories/', include(router_v1.urls)),
+    path('users/', include(router_v1.urls)),
+    path('genres/', include(router_v1.urls)),
+    path('titles/', include(router_v1.urls)),
     # дописать POST username, email
     path('v1/auth/signup/', CreateUserView.as_view()),
     # POST username end confirmation_code

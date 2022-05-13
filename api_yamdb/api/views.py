@@ -18,10 +18,10 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from api.permissions import IsAdminUserPermission
-from api.serializers import (UserSerializer,
-                             UserMeSerializer,
-                             CreateUserSerializer,
-                             CreateTokenSerializer)
+from api.serializer import (UserSerializer,
+                            UserMeSerializer,
+                            CreateUserSerializer,
+                            CreateTokenSerializer)
 
 
 User = get_user_model()
@@ -111,4 +111,3 @@ class CreateTokenView(generics.CreateAPIView):
                 {'token': str(token.access_token)},
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
