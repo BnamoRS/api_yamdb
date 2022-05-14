@@ -1,11 +1,6 @@
-from tabnanny import verbose
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-
-
-class Title(models.Model):
-    pass
 
 
 class User(AbstractUser):
@@ -31,12 +26,44 @@ class User(AbstractUser):
 
     USERNAME_FIELDS = 'username'
 
-    class Meta: 
-        verbose_name = 'Пользователь' 
+    class Meta:
+        verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
 
+class Category(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=64)
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.slug
+
+
+class Genre(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.TextField(max_length=64)
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.slug
+
+
+class Title(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.TextField(max_length=64)
+    year = models.IntegerField()
+    rating = models.IntegerField(default=None, null=True, blank=True)
+    description = models.TextField(max_length=200)
+    genre = models.ManyToManyField(Genre, null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
 class Review(models.Model):
+    id = models.AutoField(primary_key=True)
     text = models.TextField()
     title = models.ForeignKey(
         Title,
@@ -59,16 +86,17 @@ class Review(models.Model):
         verbose_name='Дата публикации'
     )
 
-
-    class Meta: 
-        verbose_name = 'Отзыв' 
-        verbose_name_plural = 'Отзывы' 
-
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
 
     def __str__(self):
         return self.text[:15]
 
+
+
 class Comment(models.Model):
+    id = models.AutoField(primary_key=True)
     text = models.TextField()
     review = models.ForeignKey(
         Review,
@@ -87,38 +115,9 @@ class Comment(models.Model):
         verbose_name='Дата публикации'
     )
 
-
-    class Meta: 
-        verbose_name = 'Комментарий' 
-        verbose_name_plural = 'Комментарии' 
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
 
     def __str__(self):
         return self.text[:15]
-
-class Category(models.Model):
-    name = models.CharField(max_length=64)
-    slug = models.SlugField(unique=True)
-
-    def __str__(self):
-        return self.slug
-
-
-class Genre(models.Model):
-    name = models.TextField(max_length=64)
-    slug = models.SlugField(unique=True)
-
-    def __str__(self):
-        return self.slug
-
-
-class Titles(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.TextField(max_length=64)
-    year = models.DateTimeField(auto_now_add=True)
-    rating = models.IntegerField(default=None, null=True, blank=True)
-    # description = models.TextField(max_length=200)
-    # genre = models.ForeignKey(Genre, on_delete=models.SET_NULL)
-    category = models.ForeignKey(Category, models.CASCADE)
-
-    def __str__(self):
-        return self.name

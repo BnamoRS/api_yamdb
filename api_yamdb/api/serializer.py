@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from reviews.models import Category, Genre, Titles
+from reviews.models import Category, Genre, Title
 from django.shortcuts import get_object_or_404
 from rest_framework.validators import UniqueValidator
 
@@ -38,7 +38,7 @@ class TitlesSerializer(serializers.ModelSerializer):
         slug_field='slug', many=True)
 
     class Meta:
-        model = Titles
+        model = Title
         fields = ('id', 'name', 'year', 'category', 'genre')
 
 
