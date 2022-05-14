@@ -19,18 +19,14 @@ router_v1.register(
     CommentViewSet,
     basename='comment',
 )
-router_v1.register('v1/categories', CategoryViewSet)
-router_v1.register('v1/genres', GenreViewSet)
-router_v1.register('v1/titles', TitlesViewSet)
+router_v1.register('categories', CategoryViewSet)
+router_v1.register('genres', GenreViewSet)
+router_v1.register('titles', TitlesViewSet)
 
 urlpatterns = [
     path('v1/auth/signup/', CreateUserView.as_view()),
     path('v1/auth/token/', CreateTokenView.as_view()),
     path('v1/users/me/', UserMeView.as_view()),
     path('v1/', include(router_v1.urls)),
-    #path('categories/', include(router_v1.urls)),
-    #path('users/', include(router_v1.urls)),
-    #path('genres/', include(router_v1.urls)),
-    #path('titles/', include(router_v1.urls)),
     path('', include(router_v1.urls)),
 ]

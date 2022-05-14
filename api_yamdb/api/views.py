@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from reviews.models import Category, Genre, Titles
+from reviews.models import Category, Genre, Title
 from rest_framework import viewsets, generics, permissions
 from rest_framework import filters, status
 from rest_framework.pagination import PageNumberPagination
@@ -20,13 +20,14 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from api.permissions import IsAdminUserPermission
-from api.serializers import (UserSerializer,
-                             UserMeSerializer,
-                             CreateUserSerializer,
-                             CreateTokenSerializer,
-                             ReviewSerializer,
-                             CommentSerializer,
-                             )
+from api.serializer import (
+    UserSerializer,
+    UserMeSerializer,
+    CreateUserSerializer,
+    CreateTokenSerializer,
+    ReviewSerializer,
+    CommentSerializer,
+)
 from reviews.models import Title
 
 #from .permissions import ReadOnly, IsAuthor, IsModer, IsAdmin
@@ -49,15 +50,17 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = (IsAuthenticatedOrReadOnly, )
+    pagination_class = PageNumberPagination
 
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+    pagination_class = PageNumberPagination
 
 
 class TitlesViewSet(viewsets.ModelViewSet):
-    queryset = Titles.objects.all()
+    queryset = Title.objects.all()
     serializer_class = TitlesSerializer
     permission_class = (IsAdminUserPermission, )
     pagination_class = PageNumberPagination
