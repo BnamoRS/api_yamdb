@@ -53,7 +53,6 @@ class Title(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.TextField(max_length=64)
     year = models.IntegerField()
-    rating = models.IntegerField(default=None, null=True, blank=True)
     description = models.TextField(max_length=200)
     genre = models.ManyToManyField(Genre, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -114,6 +113,7 @@ class Comment(models.Model):
         auto_now_add=True,
         verbose_name='Дата публикации'
     )
+
 
     class Meta:
         verbose_name = 'Комментарий'
