@@ -4,7 +4,7 @@ from reviews.models import Category, Genre, Title
 from django.shortcuts import get_object_or_404
 from rest_framework.validators import UniqueValidator, UniqueTogetherValidator
 from reviews.models import Review, Comment
-
+from django.forms.models import model_to_dict
 
 User = get_user_model()
 
@@ -38,12 +38,19 @@ class TitlesSerializer(serializers.ModelSerializer):
     category = serializers.SlugRelatedField(
         queryset=Category.objects.all(),
         slug_field='slug')
-    rating = serializers.DecimalField(max_digits=4, decimal_places=2, required=False)
-
+    rating = serializers.IntegerField(required=False)
 
     class Meta:
         model = Title
-        fields = ('id', 'name', 'year', 'category', 'genre', 'rating')
+        fields = ('id', 'name', 'year', 'category', 'genre', 'rating', 'description')
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        genres = Genre.objects.filter(slug__in=data['genre'])
+        category = Category.objects.get(slug=data['category'])
+        data['genre'] = GenreSerializer(instance=genres, many=True).data
+        data['category'] = CategorySerializer(instance=category).data
+        return data
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -100,10 +107,22 @@ class ReviewSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
         slug_field='username', read_only=True
     )
+    title = serializers.SlugRelatedField(
+        read_only=True, slug_field='id')
 
     class Meta:
         model = Review
-        fields = ('id', 'text', 'author', 'score', 'pub_date')
+        fields = ('title', 'id', 'text', 'author', 'score', 'pub_date')
+
+    def validate(self, data):
+        if self.context['request'].method == 'PATCH':
+            return data
+        title = self.context['view'].kwargs['title_id']
+        author = self.context['request'].user
+        if Review.objects.filter(author=author, title__id=title).exists():
+            raise serializers.ValidationError(
+                'Нельзя повторно комментировать отзыв!')
+        return data 
 
 
 class CommentSerializer(serializers.ModelSerializer):

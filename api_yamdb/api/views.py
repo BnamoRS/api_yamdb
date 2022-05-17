@@ -1,5 +1,6 @@
 import string
 import secrets
+from unicodedata import category
 
 from django.db.models import Avg
 from django.contrib.auth import get_user_model
@@ -10,7 +11,7 @@ from rest_framework import filters, status
 from rest_framework.pagination import PageNumberPagination
 from .serializer import CategorySerializer, GenreSerializer, TitlesSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 
@@ -74,12 +75,26 @@ class GenreViewSet(ListOrCreateOrDeleteViewsSet):
     search_fields = ('name',)
 
 
-
 class TitlesViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.all().annotate(rating=Avg('reviews__score'))
     serializer_class = TitlesSerializer
     permission_classes = [ReadOnly | IsAdminUserPermission]
     pagination_class = PageNumberPagination
+    filter_backends = (DjangoFilterBackend,)
+    filterset_fields = ('year',)
+
+    def get_queryset(self):
+        queryset = self.queryset
+        genre_slug = self.request.query_params.get('genre')
+        category_slug = self.request.query_params.get('category')
+        name = self.request.query_params.get('name')
+        if genre_slug:
+            queryset = queryset.filter(genre__slug=genre_slug)
+        if category_slug:
+            queryset = queryset.filter(category__slug=category_slug)
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
 
 
 class UserMeView(generics.RetrieveUpdateAPIView):
@@ -120,12 +135,9 @@ class CreateUserView(generics.CreateAPIView):
 
 
 class CreateTokenView(generics.CreateAPIView):
-    #queryset = User.objects.all()
     serialiser_class = CreateTokenSerializer
 
     def post(self, request):
-        #username = request.data.get('username')
-        #user = get_object_or_404(User, username=username)
         serializer = CreateTokenSerializer(data=request.data)
         if serializer.is_valid():
             user = User.objects.get(
@@ -139,20 +151,22 @@ class CreateTokenView(generics.CreateAPIView):
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
-    permission_classes = [ReadOnly | IsAdminUserPermission | IsModerUserPermission]
+    pagination_class = PageNumberPagination
+    permission_classes = [IsAuthorUserPermission | IsModerUserPermission | IsAdminUserPermission]
 
     def get_queryset(self):
-        title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
+        title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
         return title.reviews.all()
 
     def perform_create(self, serializer):
-        title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
+        title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
         serializer.save(author=self.request.user, title=title)
 
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
-    permission_classes = []
+    pagination_class = PageNumberPagination
+    permission_classes = [IsAuthorUserPermission | IsModerUserPermission | IsAdminUserPermission]
 
     def get_queryset(self):
         title = get_object_or_404(Title, id=self.kwargs.get('title_id'))

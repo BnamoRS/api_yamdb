@@ -36,6 +36,10 @@ class Category(models.Model):
     name = models.CharField(max_length=64)
     slug = models.SlugField(unique=True)
 
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
     def __str__(self):
         return self.slug
 
@@ -44,6 +48,11 @@ class Genre(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.TextField(max_length=64)
     slug = models.SlugField(unique=True)
+
+    class Meta:
+        verbose_name = 'Жанр'
+        verbose_name_plural = 'Жанры'
+
 
     def __str__(self):
         return self.slug
@@ -57,6 +66,10 @@ class Title(models.Model):
     genre = models.ManyToManyField(Genre, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name = 'Произведение'
+        verbose_name_plural = 'Произведения'
+    
     def __str__(self):
         return self.name
 
@@ -89,9 +102,15 @@ class Review(models.Model):
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
 
+        constraints = [
+            models.UniqueConstraint(
+                fields=['author', 'title'],
+                name='unique_review_for_title'
+            )
+        ]
+
     def __str__(self):
         return self.text[:15]
-
 
 
 class Comment(models.Model):
