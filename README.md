@@ -69,72 +69,72 @@ pip install -r requirements.txt
 
 ## Авторы
 
-***Роман Буцких***
+* ***Роман Буцких***
 
-***Софья Шилова***
+* ***Софья Шилова***
 
-***Никита Шаров***
+* ***Никита Шаров***
 
 ## Эндпоинты 
 
-`http://127.0.0.1:8000/api/v1/auth/signup/` - *запрос POST*
+* `http://127.0.0.1:8000/api/v1/auth/signup/` - *запрос POST*
 
-`http://127.0.0.1:8000/api/v1/auth/token/` - *запрос POST*
+* `http://127.0.0.1:8000/api/v1/auth/token/` - *запрос POST*
 
-`http://127.0.0.1:8000/api/v1/categories/` - *запрос GET* - получение списка всех категорий
+* `http://127.0.0.1:8000/api/v1/categories/` - *запрос GET* - получение списка всех категорий
 
-`http://127.0.0.1:8000/api/v1/categories/` - *запрос POST* - добавление новой категории
+* `http://127.0.0.1:8000/api/v1/categories/` - *запрос POST* - добавление новой категории
 
-`http://127.0.0.1:8000/api/v1/categories/{slug}/` - *запрос DELETE* - удаление категории
+* `http://127.0.0.1:8000/api/v1/categories/{slug}/` - *запрос DELETE* - удаление категории
 
-`http://127.0.0.1:8000/api/v1/genres/` - *запрос GET* - получение списка всех жанров
+* `http://127.0.0.1:8000/api/v1/genres/` - *запрос GET* - получение списка всех жанров
 
-`http://127.0.0.1:8000/api/v1/genres/` - *запрос POST* - добавление жанра
+* `http://127.0.0.1:8000/api/v1/genres/` - *запрос POST* - добавление жанра
 
-`http://127.0.0.1:8000/api/v1/genres/{slug}/` - *запрос DELETE* - удаление жанра
+* `http://127.0.0.1:8000/api/v1/genres/{slug}/` - *запрос DELETE* - удаление жанра
 
-`http://127.0.0.1:8000/api/v1/titles/` - *запрос GET* - получение списка всех произведений
+* `http://127.0.0.1:8000/api/v1/titles/` - *запрос GET* - получение списка всех произведений
 
-`http://127.0.0.1:8000/api/v1/titles/` - *запрос POST* - добавление произведения
-`http://127.0.0.1:8000/api/v1/titles/{titles_id}/` - *запрос GET* - получение информации о произведении
+* `http://127.0.0.1:8000/api/v1/titles/` - *запрос POST* - добавление произведения
+* `http://127.0.0.1:8000/api/v1/titles/{titles_id}/` - *запрос GET* - получение информации о произведении
 
-`http://127.0.0.1:8000/api/v1/titles/{titles_id}/` - *запрос PATCH* - обновление информации о произведении
+* `http://127.0.0.1:8000/api/v1/titles/{titles_id}/` - *запрос PATCH* - обновление информации о произведении
 
-`http://127.0.0.1:8000/api/v1/titles/{titles_id}/` - *запрос DELETE* - удаление произведения
+* `http://127.0.0.1:8000/api/v1/titles/{titles_id}/` - *запрос DELETE* - удаление произведения
 
-`http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/` - *запрос GET* - получение списка всех отзывов
+* `http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/` - *запрос GET* - получение списка всех отзывов
 
-`http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/` - *запрос POST* - добавление отзыва
+* `http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/` - *запрос POST* - добавление отзыва
 
-`http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/` - *запрос GET* - получение отзыва по id
+* `http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/` - *запрос GET* - получение отзыва по id
 
-`http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/` - *запрос PATCH* - обновление отзыва по id
+* `http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/` - *запрос PATCH* - обновление отзыва по id
 
-`http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/` - *запрос DELETE* - удаление отзыва по id
+* `http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/` - *запрос DELETE* - удаление отзыва по id
 
-`http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/` - *запрос GET* - получение списка всех комментариев к отзыву
+* `http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/` - *запрос GET* - получение списка всех комментариев к отзыву
 
-`http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/` - *запрос POST* - добавление комментария к отзыву
+* `http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/` - *запрос POST* - добавление комментария к отзыву
 
-`http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/{comment_id}/` - *запрос GET* - получение комментария к отзыву
+* `http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/{comment_id}/` - *запрос GET* - получение комментария к отзыву
 
-`http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/{comment_id}/` - *запрос PATCH* - обновление комментария к отзыву
+* `http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/* comments/{comment_id}/` - *запрос PATCH* - обновление комментария к отзыву
 
-`http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/{comment_id}/` - *запрос DELETE* - удаление о комментария к отзыву
+* `http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/{comment_id}/` - *запрос DELETE* - удаление о комментария к отзыву
 
-`http://127.0.0.1:8000/api/v1/users/`- *запрос GET* - получение списка всех пользователей
+* `http://127.0.0.1:8000/api/v1/users/`- *запрос GET* - получение списка всех пользователей
 
-`http://127.0.0.1:8000/api/v1/users/`- *запрос POST* - добавление пользователя
+* `http://127.0.0.1:8000/api/v1/users/`- *запрос POST* - добавление пользователя
 
-`http://127.0.0.1:8000/api/v1/users/{username}/` - *запрос GET* - получение информации о пользователе
+* `http://127.0.0.1:8000/api/v1/users/{username}/` - *запрос GET* - получение информации о пользователе
 
-`http://128.0.0.1:8000/api/v1/users/{username}/` - *запрос PATCH* - обновление информации о пользователе
+* `http://128.0.0.1:8000/api/v1/users/{username}/` - *запрос PATCH* - обновление информации о пользователе
 
-`http://127.0.0.1:8000/api/v1/users/{username}/`- *запрос DELETE* - удаление пользователя
+* `http://127.0.0.1:8000/api/v1/users/{username}/`- *запрос DELETE* - удаление пользователя
 
-`http://127.0.0.1:8000/api/v1/users/me/` - *запрос GET* - получение данных своей учетной записи
+* `http://127.0.0.1:8000/api/v1/users/me/` - *запрос GET* - получение данных своей учетной записи
 
-`http://127.0.0.1:8000/api/v1/users/me/` - *запрос PATCH* - обновление данных своей учетной записи
+* `http://127.0.0.1:8000/api/v1/users/me/` - *запрос PATCH* - обновление данных своей учетной записи
 
 ## Примеры
 
