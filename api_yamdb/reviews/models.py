@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class User(AbstractUser):
@@ -27,6 +27,7 @@ class User(AbstractUser):
     USERNAME_FIELDS = 'username'
 
     class Meta:
+        ordering = ('date_joined',)
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
@@ -37,6 +38,7 @@ class Category(models.Model):
     slug = models.SlugField(unique=True)
 
     class Meta:
+        ordering = ('id',)
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
@@ -50,9 +52,9 @@ class Genre(models.Model):
     slug = models.SlugField(unique=True)
 
     class Meta:
+        ordering = ('id',)
         verbose_name = 'Жанр'
         verbose_name_plural = 'Жанры'
-
 
     def __str__(self):
         return self.slug
@@ -63,13 +65,13 @@ class Title(models.Model):
     name = models.TextField(max_length=64)
     year = models.IntegerField()
     description = models.TextField(max_length=200)
-    genre = models.ManyToManyField(Genre, null=True, blank=True)
+    genre = models.ManyToManyField(Genre, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Произведение'
         verbose_name_plural = 'Произведения'
-    
+
     def __str__(self):
         return self.name
 
@@ -99,6 +101,7 @@ class Review(models.Model):
     )
 
     class Meta:
+        ordering = ('pub_date',)
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
 
@@ -133,8 +136,8 @@ class Comment(models.Model):
         verbose_name='Дата публикации'
     )
 
-
     class Meta:
+        ordering = ('pub_date',)
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
 

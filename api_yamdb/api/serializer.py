@@ -1,10 +1,8 @@
 from django.contrib.auth import get_user_model
-from rest_framework import serializers
-from reviews.models import Category, Genre, Title
 from django.shortcuts import get_object_or_404
-from rest_framework.validators import UniqueValidator, UniqueTogetherValidator
-from reviews.models import Review, Comment
-from django.forms.models import model_to_dict
+from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
+from reviews.models import Category, Comment, Genre, Review, Title
 
 User = get_user_model()
 
@@ -42,7 +40,8 @@ class TitlesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Title
-        fields = ('id', 'name', 'year', 'category', 'genre', 'rating', 'description')
+        fields = (
+            'id', 'name', 'year', 'category', 'genre', 'rating', 'description')
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -69,7 +68,8 @@ class UserMeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'bio', 'role')
+        fields = (
+            'username', 'first_name', 'last_name', 'email', 'bio', 'role')
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
@@ -122,7 +122,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         if Review.objects.filter(author=author, title__id=title).exists():
             raise serializers.ValidationError(
                 'Нельзя повторно комментировать отзыв!')
-        return data 
+        return data
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -131,7 +131,7 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only=True,
         validators=[UniqueValidator(queryset=Comment.objects.all())]
     )
-    
+
     class Meta:
         model = Comment
         fields = ('id', 'text', 'author', 'pub_date')
