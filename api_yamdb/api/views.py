@@ -17,15 +17,17 @@ from api.permissions import (CommentRewiewPermission, IsAdminUserPermission,
                              ReadOnly)
 from api.serializer import (CommentSerializer, CreateTokenSerializer,
                             CreateUserSerializer, ReviewSerializer,
-                            UserMeSerializer, UserSerializer)
+                            UserMeSerializer, UserSerializer,
+                            CategorySerializer, GenreSerializer,
+                            TitlesSerializer
+                            )
 
-from .serializer import CategorySerializer, GenreSerializer, TitlesSerializer
 
 User = get_user_model()
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by('date_joined')
     serializer_class = UserSerializer
     lookup_field = 'username'
     permission_classes = (IsAdminUserPermission,)
@@ -42,7 +44,7 @@ class ListOrCreateOrDeleteViewsSet(
 
 
 class CategoryViewSet(ListOrCreateOrDeleteViewsSet):
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().order_by('id')
     serializer_class = CategorySerializer
     permission_classes = [ReadOnly | IsAdminUserPermission]
     pagination_class = PageNumberPagination
@@ -53,7 +55,7 @@ class CategoryViewSet(ListOrCreateOrDeleteViewsSet):
 
 class GenreViewSet(ListOrCreateOrDeleteViewsSet):
     permission_classes = [ReadOnly | IsAdminUserPermission]
-    queryset = Genre.objects.all()
+    queryset = Genre.objects.all().order_by('id')
     serializer_class = GenreSerializer
     pagination_class = PageNumberPagination
     lookup_field = 'slug'
@@ -143,7 +145,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
-        return title.reviews.all()
+        return title.reviews.all().order_by('pub_date')
 
     def perform_create(self, serializer):
         title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
@@ -159,7 +161,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
         review = get_object_or_404(
             title.reviews, id=self.kwargs.get('review_id'))
-        return review.comments.all()
+        return review.comments.all().order_by('pub_date')
 
     def perform_create(self, serializer):
         title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
