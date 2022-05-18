@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class User(AbstractUser):
@@ -56,7 +56,6 @@ class Genre(models.Model):
         verbose_name = 'Жанр'
         verbose_name_plural = 'Жанры'
 
-
     def __str__(self):
         return self.slug
 
@@ -70,10 +69,9 @@ class Title(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     class Meta:
-        #ordering = ('category',)
         verbose_name = 'Произведение'
         verbose_name_plural = 'Произведения'
-    
+
     def __str__(self):
         return self.name
 
@@ -137,7 +135,6 @@ class Comment(models.Model):
         auto_now_add=True,
         verbose_name='Дата публикации'
     )
-
 
     class Meta:
         ordering = ('pub_date',)

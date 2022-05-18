@@ -1,10 +1,10 @@
-from unicodedata import category
-from django.core.management.base import BaseCommand
 import csv
 import sqlite3
+from unicodedata import category
 
-from reviews.models import Comment, Review, User, Genre, Title, Category
+from django.core.management.base import BaseCommand
 
+from reviews.models import Category, Comment, Genre, Review, Title, User
 
 models_and_files = {
     'review.csv': Review,
