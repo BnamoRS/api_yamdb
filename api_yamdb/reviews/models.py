@@ -27,9 +27,11 @@ class User(AbstractUser):
     USERNAME_FIELDS = 'username'
 
     class Meta:
-        ordering = ('date_joined',)
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
+
+    def __str__(self):
+        return self.username
 
 
 class Category(models.Model):
@@ -38,7 +40,6 @@ class Category(models.Model):
     slug = models.SlugField(unique=True)
 
     class Meta:
-        ordering = ('id',)
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
@@ -52,7 +53,6 @@ class Genre(models.Model):
     slug = models.SlugField(unique=True)
 
     class Meta:
-        ordering = ('id',)
         verbose_name = 'Жанр'
         verbose_name_plural = 'Жанры'
 
@@ -101,7 +101,6 @@ class Review(models.Model):
     )
 
     class Meta:
-        ordering = ('pub_date',)
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
 
@@ -137,7 +136,6 @@ class Comment(models.Model):
     )
 
     class Meta:
-        ordering = ('pub_date',)
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
 
