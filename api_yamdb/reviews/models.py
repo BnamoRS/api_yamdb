@@ -27,6 +27,7 @@ class User(AbstractUser):
     USERNAME_FIELDS = 'username'
 
     class Meta:
+        ordering = ('date_joined',)
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
@@ -37,6 +38,7 @@ class Category(models.Model):
     slug = models.SlugField(unique=True)
 
     class Meta:
+        ordering = ('id',)
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
@@ -50,6 +52,7 @@ class Genre(models.Model):
     slug = models.SlugField(unique=True)
 
     class Meta:
+        ordering = ('id',)
         verbose_name = 'Жанр'
         verbose_name_plural = 'Жанры'
 
@@ -63,10 +66,11 @@ class Title(models.Model):
     name = models.TextField(max_length=64)
     year = models.IntegerField()
     description = models.TextField(max_length=200)
-    genre = models.ManyToManyField(Genre, null=True, blank=True)
+    genre = models.ManyToManyField(Genre, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     class Meta:
+        #ordering = ('category',)
         verbose_name = 'Произведение'
         verbose_name_plural = 'Произведения'
     
@@ -99,6 +103,7 @@ class Review(models.Model):
     )
 
     class Meta:
+        ordering = ('pub_date',)
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
 
@@ -135,6 +140,7 @@ class Comment(models.Model):
 
 
     class Meta:
+        ordering = ('pub_date',)
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
 

@@ -119,6 +119,7 @@ class ReviewSerializer(serializers.ModelSerializer):
             return data
         title = self.context['view'].kwargs['title_id']
         author = self.context['request'].user
+        print(author)
         if Review.objects.filter(author=author, title__id=title).exists():
             raise serializers.ValidationError(
                 'Нельзя повторно комментировать отзыв!')

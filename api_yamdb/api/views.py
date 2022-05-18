@@ -6,6 +6,7 @@ from django.db.models import Avg
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
+from requests import request
 from rest_framework import viewsets, generics, permissions, mixins
 from rest_framework import filters, status
 from rest_framework.pagination import PageNumberPagination
@@ -23,7 +24,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from api.permissions import (
-    IsAdminUserPermission, IsAuthorUserPermission, IsModerUserPermission, ReadOnly)
+    IsAdminUserPermission, IsAuthorUserPermission, IsModerUserPermission, ReadOnly, CommentRewiewPermission)
 from api.serializer import (
     UserSerializer,
     UserMeSerializer,
@@ -76,7 +77,7 @@ class GenreViewSet(ListOrCreateOrDeleteViewsSet):
 
 
 class TitlesViewSet(viewsets.ModelViewSet):
-    queryset = Title.objects.all().annotate(rating=Avg('reviews__score'))
+    queryset = Title.objects.all().annotate(rating=Avg('reviews__score')).order_by('id')
     serializer_class = TitlesSerializer
     permission_classes = [ReadOnly | IsAdminUserPermission]
     pagination_class = PageNumberPagination
@@ -152,8 +153,19 @@ class CreateTokenView(generics.CreateAPIView):
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     pagination_class = PageNumberPagination
-    permission_classes = [IsAuthorUserPermission | IsModerUserPermission | IsAdminUserPermission]
+    permission_classes = [CommentRewiewPermission]
 
+    #def get_permissions(self):
+    #    if self.request.method in permissions.SAFE_METHODS:
+    #        return [ReadOnly]
+    #    elif self.request.method == 'POST':
+    #        print('111')
+    #        return [IsAuthenticated]
+    #    else:
+    #        return [IsAuthorUserPermission]
+
+
+        
     def get_queryset(self):
         title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
         return title.reviews.all()
@@ -166,7 +178,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     pagination_class = PageNumberPagination
-    permission_classes = [IsAuthorUserPermission | IsModerUserPermission | IsAdminUserPermission]
+    permission_classes = [CommentRewiewPermission]
 
     def get_queryset(self):
         title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
