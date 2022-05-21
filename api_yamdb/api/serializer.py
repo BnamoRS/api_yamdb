@@ -1,18 +1,8 @@
-from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from reviews.models import Category, Comment, Genre, Review, Title
 
-User = get_user_model()
-
-
-#class UserSerializer(serializers.ModelSerializer):
-
-#    class Meta:
-#        model = User
-#        fields = (
-#            'username', 'first_name', 'last_name', 'email', 'bio', 'role')
+from reviews.models import Category, Comment, Genre, Review, Title, User
 
 
 class CategorySerializer(serializers.ModelSerializer):
