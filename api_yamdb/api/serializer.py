@@ -1,18 +1,8 @@
-from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from reviews.models import Category, Comment, Genre, Review, Title
 
-User = get_user_model()
-
-
-class UserSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = (
-            'username', 'first_name', 'last_name', 'email', 'bio', 'role')
+from reviews.models import Category, Comment, Genre, Review, Title, User
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -92,15 +82,15 @@ class CreateTokenSerializer(serializers.ModelSerializer):
     confirmation_code = serializers.CharField()
     username = serializers.CharField()
 
+    class Meta:
+        model = User
+        fields = ('confirmation_code', 'username')
+
     def validate(self, data):
         user = get_object_or_404(User, username=data.get('username'))
         if user.confirmation_code != data.get('confirmation_code'):
             raise serializers.ValidationError('Неверный код подтверждения')
         return data
-
-    class Meta:
-        model = User
-        fields = ('confirmation_code', 'username')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
