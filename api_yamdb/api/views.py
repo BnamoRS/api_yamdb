@@ -1,29 +1,23 @@
 import secrets
 import string
 
-from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import (filters, generics, mixins, permissions, status,
-                            viewsets)
+from rest_framework import filters, generics, permissions, status, viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from reviews.models import Category, Genre, Title
 
+from reviews.models import Category, Genre, Title, User
 from api.permissions import (CommentRewiewPermission, IsAdminUserPermission,
                              ReadOnly)
-from api.serializer import (CommentSerializer, CreateTokenSerializer,
-                            CreateUserSerializer, ReviewSerializer,
-                            UserMeSerializer, UserSerializer,
-                            CategorySerializer, GenreSerializer,
-                            TitlesSerializer
-                            )
-
-
-User = get_user_model()
+from api.serializer import (CategorySerializer, CommentSerializer,
+                            CreateTokenSerializer, CreateUserSerializer,
+                            GenreSerializer, ReviewSerializer,
+                            TitlesSerializer, UserMeSerializer, UserSerializer)
+from api.viewsets import ListOrCreateOrDeleteViewsSet
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -34,13 +28,6 @@ class UserViewSet(viewsets.ModelViewSet):
     pagination_class = PageNumberPagination
     filter_backends = (filters.SearchFilter,)
     search_fields = ('username',)
-
-
-class ListOrCreateOrDeleteViewsSet(
-    mixins.ListModelMixin, mixins.CreateModelMixin,
-    mixins.DestroyModelMixin, viewsets.GenericViewSet
-):
-    pass
 
 
 class CategoryViewSet(ListOrCreateOrDeleteViewsSet):

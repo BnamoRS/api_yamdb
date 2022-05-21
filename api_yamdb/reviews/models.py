@@ -4,6 +4,7 @@ from django.db import models
 
 
 class User(AbstractUser):
+    USERNAME_FIELDS = 'username'
 
     ROLE = [
         ('user', 'user'),
@@ -24,8 +25,6 @@ class User(AbstractUser):
     )
     confirmation_code = models.CharField(max_length=15)
 
-    USERNAME_FIELDS = 'username'
-
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
@@ -35,7 +34,6 @@ class User(AbstractUser):
 
 
 class Category(models.Model):
-    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=64)
     slug = models.SlugField(unique=True)
 
@@ -48,7 +46,6 @@ class Category(models.Model):
 
 
 class Genre(models.Model):
-    id = models.AutoField(primary_key=True)
     name = models.TextField(max_length=64)
     slug = models.SlugField(unique=True)
 
@@ -61,9 +58,8 @@ class Genre(models.Model):
 
 
 class Title(models.Model):
-    id = models.AutoField(primary_key=True)
     name = models.TextField(max_length=64)
-    year = models.IntegerField()
+    year = models.PositiveSmallIntegerField()
     description = models.TextField(max_length=200)
     genre = models.ManyToManyField(Genre, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -77,7 +73,6 @@ class Title(models.Model):
 
 
 class Review(models.Model):
-    id = models.AutoField(primary_key=True)
     text = models.TextField()
     title = models.ForeignKey(
         Title,
@@ -116,7 +111,6 @@ class Review(models.Model):
 
 
 class Comment(models.Model):
-    id = models.AutoField(primary_key=True)
     text = models.TextField()
     review = models.ForeignKey(
         Review,
