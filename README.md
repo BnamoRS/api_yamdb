@@ -50,6 +50,7 @@
 * pytest==6.2.4
 * pytest-django==4.4.0
 * pytest-pythonpath==0.7.3
+* djangorestframework-simplejwt==5.1.0
 
 
 ## Установка
