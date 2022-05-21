@@ -10,14 +10,15 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from api.mixins import ListOrCreateOrDeleteViewsSet
+
+from reviews.models import Category, Genre, Title, User
 from api.permissions import (CommentRewiewPermission, IsAdminUserPermission,
                              ReadOnly)
 from api.serializer import (CategorySerializer, CommentSerializer,
                             CreateTokenSerializer, CreateUserSerializer,
                             GenreSerializer, ReviewSerializer,
                             TitlesSerializer, UserMeSerializer, UserSerializer)
-from reviews.models import Category, Genre, Title, User
+from api.viewsets import ListOrCreateOrDeleteViewsSet
 
 
 class UserViewSet(viewsets.ModelViewSet):
